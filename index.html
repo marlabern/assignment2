@@ -1,0 +1,133 @@
+<html>
+	<head>
+		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+		<script type="text/javascript">
+			
+			//SENDING AND RECIEVING MESSAGES ON CLIENT SIDE HAPPENS HERE
+			var socket = io.connect();
+			
+			socket.on('connect', function() {
+				console.log("Connected");
+			});
+
+			// Receive from any event
+			socket.on('chatmessage', function (data) {
+				console.log(data);
+
+				document.getElementById('messages').innerHTML = document.getElementById('messages').innerHTML+ "<b id='friend'> Friend: </b>" + data + "" +"<br>";
+
+			});
+			
+			var sendmessage = function(message) {
+				console.log("chatmessage: " + message);
+				socket.emit('chatmessage', message);
+
+				
+				document.getElementById('messages').innerHTML=document.getElementById('messages').innerHTML + "<b id='me'> Me: </b>" + message + "" + "<br>";
+
+				document.getElementById("message").value = "";
+
+			};
+
+	
+		</script>	
+
+		<style> 
+		#container{
+			width:100%;
+			margin-left: auto;
+			margin-right:auto;
+			overflow: auto;
+		}
+		#begin{
+			width:100%;
+			float:center;
+			background-color: #000000;
+			color:#ffffff;
+			padding-top: 13px;
+			font-size: 40px;
+			text-align: center;
+			font-family: "DIN Condensed";
+			display: inline-block;
+    		border: 2px solid #000;
+    		border-radius: 4px;
+   			box-sizing: border-box;
+		}
+		#messages{
+			width:100%;
+			float:center;
+			margin-top: 20px;
+			padding-top: 60px;
+			padding-left: 28%;
+			padding-bottom: 60px;
+			text-align: left;
+			font-family: "DIN Alternate";
+			display: inline-block;
+    		border: 2px solid #000;
+    		border-radius: 4px;
+   			box-sizing: border-box;
+		}
+		#message{
+			float:center;
+			align-content: center;
+			font-family: "DIN Alternate";
+			width:40%;
+		}
+		#friend{
+			color:#808080;
+		}
+		#me{
+			color:#404040;
+		}
+		input[type=text]{
+    		padding: 12px 20px;
+    		margin: 8px 0;
+    		display: inline-block;
+    		border: 2px solid #000;
+    		border-radius: 4px;
+   			box-sizing: border-box;
+   			float:center;
+   			color:#000000;
+   			
+		}
+
+		div#input {
+   			margin: auto!important;
+   			display: block!important;
+   			padding-left: 28%!important;
+			}
+		input[type=submit]{
+   			background-color: #000000;
+   			color: white;
+    		padding: 14px 20px;
+    		margin: 8px 0;
+    		border: none;
+    		border-radius: 4px;
+    		cursor: pointer;
+    		font-family: "DIN Alternate";
+    		float:center;
+    	}
+
+		</style>
+	</head>
+ <body>
+ <!-- USE IDs TO CONNECT THE JAVASCRIPT AND THE HTML-->
+ 	<div id="container">
+ 	<div id="begin">
+ 		CHAT WITH A FRIEND
+ 	</div>
+	
+	<div id="messages"></div>
+	<br>
+	
+	<div id="input">
+
+		 <input type="text" id="message" name="message" placeholder="Type a message.">
+		 
+		 <input type="submit" value="submit" id="click" onclick="sendmessage(document.getElementById('message').value);">
+
+	</div>
+
+	</div>
+ </body>
+</html>
